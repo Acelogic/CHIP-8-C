@@ -1,19 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <SDL2/SDL.h>
+#include <stdint.h> 
 
-
-int main(int argc, char* argv[])
+int main(int argc, char const *argv[])
 {
-    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0) {
-        SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
-        return 1;
+    FILE *f = fopen(argv[1], "rb");
+    if (f == NULL)
+    {
+        printf("error: Couldn't open %s\n", argv[1]);
+        exit(1);
     }
+    //Get the file size
+    fseek(f, 0L, SEEK_END);
+    int fsize = ftell(f);
+    fseek(f, 0L, SEEK_SET);
 
-    /* ... */
-
-    SDL_Quit();
-
+    //CHIP-8 convention puts programs in memory at 0x200
+    // They will all have hardcoded addresses expecting that
+    //
+    //Read the file into memory at 0x200 and close it.
+    uint8_t *buffer = malloc(fsize + 0x200);
+    fread(buffer + 0x200, fsize, 1, f);
+    fclose(f);
     return 0;
 }
