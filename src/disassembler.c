@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
+#include "disassembler.h"
 
-void disassemble(uint8_t *codebuffer, int pc)
+void disassemble(uint8_t *codebuffer, uint16_t pc)
 {
     uint8_t *code = &codebuffer[pc];
     uint8_t upper_byte = code[0];
@@ -152,7 +153,7 @@ void disassemble(uint8_t *codebuffer, int pc)
     }
 }
 
-int main(int argc, char **argv)
+/* int main(int argc, char **argv)
 {
     FILE *f = fopen(argv[1], "rb");
     if (f == NULL)
@@ -182,4 +183,4 @@ int main(int argc, char **argv)
         printf("\n");
     }
     return 0;
-}
+} */
