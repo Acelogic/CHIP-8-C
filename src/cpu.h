@@ -39,7 +39,7 @@ struct cpu{
     uint8_t memory[MEM_SIZE];
     uint8_t V[NUM_REGS];
     uint8_t key[NUM_KEYS];
-    uint8_t graphics[WIDTH * HEIGHT];
+    uint8_t graphics[GFX_SIZE];
     uint8_t delay_timer;
     uint8_t sound_timer;
     uint8_t flags; 
@@ -54,13 +54,26 @@ struct cpu{
 typedef struct cpu C8; 
  
 C8* chip_8_init(); 
-void disassemble_rom( C8* chip8, FILE *f);
-uint8_t load_rom(C8* chip8, FILE *f ); 
-void memory_write(C8* chip8, uint16_t address, uint8_t value); 
+
 uint8_t memory_read(C8* chip8, uint16_t address);
-void register_write(C8* chip8, uint8_t Vx, uint8_t value);
+void memory_write(C8* chip8, uint16_t address, uint8_t value); 
+
 uint8_t register_read(C8* chip8, uint8_t Vx);  
-uint16_t pc_read(C8* chip8); 
+void register_write(C8* chip8, uint8_t Vx, uint8_t value);
+
+uint16_t pc_read(C8* chip8);
+void pc_write(C8* chip8 , uint16_t value);
+
+uint16_t I_read(C8* chip8); 
+void I_write(C8* chip8, uint16_t value); 
+
+uint8_t flag_read(C8* chip8, uint8_t flag);
+
+void stack_push(C8* chip8);
+void stack_pop(C8* chip8); 
+
+void disassemble_rom( C8* chip8, FILE *f);
+void load_rom(C8* chip8, FILE *f ); 
 void chip8_mem_dump(C8* chip8);
 void chip8_debug(C8* chip8); 
 void fetch(); 
