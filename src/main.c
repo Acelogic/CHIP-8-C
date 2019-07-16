@@ -11,6 +11,8 @@ int main(int argc, char **argv)
     
     FILE *f = fopen(argv[2], "rb");
     
+     
+
     int option;
     while ((option = getopt(argc, argv, "dfh")) != -1){
         switch (option){

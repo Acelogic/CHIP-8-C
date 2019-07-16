@@ -26,24 +26,57 @@ C8 *chip_8_init()
     return chip8;
 }
 
-uint8_t memory_read(C8* chip8, uint16_t address){return chip8->memory[address];}
-void memory_write(C8* chip8, uint16_t address, uint8_t value){chip8->memory[address] = value;}
+uint8_t memory_read(C8 *chip8, uint16_t address)
+{
+    return chip8->memory[address];
+}
+void memory_write(C8 *chip8, uint16_t address, uint8_t value)
+{
+    chip8->memory[address] = value;
+}
+uint8_t register_read(C8 *chip8, uint8_t Vx)
+{
+    return chip8->V[Vx];
+}
+void register_write(C8 *chip8, uint8_t Vx, uint8_t value)
+{
+    chip8->V[Vx] = value;
+}
 
-uint8_t register_read(C8* chip8, uint8_t Vx){return chip8->V[Vx];}
-void register_write(C8* chip8, uint8_t Vx, uint8_t value){chip8->V[Vx] = value;}
+uint16_t pc_read(C8 *chip8)
+{
+    return chip8->pc;
+}
+void pc_write(C8 *chip8, uint16_t value)
+{
+    chip8->pc = value;
+}
 
-uint16_t pc_read(C8* chip8){return chip8->pc;}
-void pc_write(C8* chip8, uint16_t value){chip8 -> pc = value;}
+uint16_t I_read(C8 *chip8)
+{
+    return chip8->I;
+}
+void I_write(C8 *chip8, uint16_t value)
+{
+    chip8->I = value;
+}
 
-uint16_t I_read(C8* chip8){return chip8->I;}
-void I_write(C8* chip8, uint16_t value) {chip8 -> I = value;}
+uint8_t flag_read(C8 *chip8, uint8_t flag)
+{
+    return chip8->flags & flag;
+}
 
-uint8_t flag_read(C8* chip8, uint8_t flag){return chip8->flags & flag;}
+void stack_push(C8 *chip8)
+{
+    chip8->stack[chip8->sp++] = pc_read(chip8);
+}
+void stack_pop(C8 *chip8)
+{
+    pc_write(chip8, chip8->stack[--chip8->sp]);
+}
 
-void stack_push(C8* chip8) {chip8->stack[chip8->sp++] = pc_read(chip8);}
-void stack_pop(C8* chip8) {pc_write(chip8, chip8->stack[--chip8->sp]);}
-
-void disassemble_rom(C8 *chip8, FILE *f){
+void disassemble_rom(C8 *chip8, FILE *f)
+{
     //Get the file size
     fseek(f, 0L, SEEK_END);
     int fsize = ftell(f);
