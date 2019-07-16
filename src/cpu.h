@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-
-
 #define MEM_SIZE      4096
 #define BYTES_PER_CHAR 5
 #define CHARSET_SIZE  80
@@ -57,12 +55,14 @@ typedef struct cpu C8;
  
 C8* chip_8_init(); 
 void disassemble_rom( C8* chip8, FILE *f);
-void load_rom(C8* chip8, FILE *f ); 
+uint8_t load_rom(C8* chip8, FILE *f ); 
 void memory_write(C8* chip8, uint16_t address, uint8_t value); 
 uint8_t memory_read(C8* chip8, uint16_t address);
 void register_write(C8* chip8, uint8_t Vx, uint8_t value);
 uint8_t register_read(C8* chip8, uint8_t Vx);  
 uint16_t pc_read(C8* chip8); 
+void chip8_mem_dump(C8* chip8);
+void chip8_debug(C8* chip8); 
 void fetch(); 
 void decode(); 
 void execute(); 
