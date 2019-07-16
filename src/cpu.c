@@ -4,13 +4,14 @@
 
 C8* chip_8_init(){
     
-    C8* chip8 = malloc(sizeof(chip8));
+    C8* chip8 = malloc(sizeof(C8));
     chip8->opcode = 0;
     chip8->sp = 0;
     chip8->I = 0;
     chip8->flags = 0;
     chip8->delay_timer = 0;
     chip8->sound_timer = 0;
+    chip8->pc = 0;
 
     uint16_t i;
     for (i = 0; i < NUM_REGS; i++){register_write(chip8, i, 0);}
@@ -42,15 +43,7 @@ C8* chip_8_init(){
     return chip8->pc; 
 }
 
-
-uint8_t load_rom(char **argv){ 
-    FILE *f = fopen(argv[1],"rb"); 
-    if (f == NULL)
-    {
-        printf("error: Couldn't open %s\n", argv[1]);
-        exit(1);
-    }
-
+void disassemble_rom(C8* chip8, FILE *f ){ 
     //Get the file size
     fseek(f, 0L, SEEK_END);
     int fsize = ftell(f);
@@ -63,10 +56,37 @@ uint8_t load_rom(char **argv){
     uint8_t *buffer = malloc(fsize + 0x200);
     fread(buffer + 0x200, fsize, 1, f);
     fclose(f);
-    C8* chip8 = chip_8_init();   
-    return *chip8->memory = buffer; 
+    
+      
+    chip8 -> pc = 0x200;
+     
+    while (chip8 -> pc < (fsize + 0x200))
+    {
+        disassemble(buffer, chip8 -> pc);
+        chip8 -> pc += 2; // increment program counter by 2
+        printf("\n");
+    }
+
+    //printf("Final Program Counter:%04x \n",  pc_read(chip8));
+
 }
 
+void load_rom(C8* chip8, FILE *f ){ 
+     //Get the file size
+    fseek(f, 0L, SEEK_END);
+    int fsize = ftell(f);
+    fseek(f, 0L, SEEK_SET);
+
+    //CHIP-8 convention puts programs in memory at 0x200
+    // They will all have hardcoded addresses expecting that
+    //
+    //Read the file into memory at 0x200 and close it.
+    *chip8 -> memory = malloc(fsize + 0x200);
+    fread(chip8 -> memory + 0x200, fsize, 1, f);
+    fclose(f);  
+
+    printf("%04x", memory_read(chip8, 0x200)); 
+}
 
 void fetch(); 
 void decode(); 

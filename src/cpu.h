@@ -38,7 +38,6 @@ const static uint8_t font_charset[CHARSET_SIZE] = {
 };
 
 struct cpu{
-    FILE * game;
     uint8_t memory[MEM_SIZE];
     uint8_t V[NUM_REGS];
     uint8_t key[NUM_KEYS];
@@ -57,12 +56,13 @@ struct cpu{
 typedef struct cpu C8; 
  
 C8* chip_8_init(); 
+void disassemble_rom( C8* chip8, FILE *f);
+void load_rom(C8* chip8, FILE *f ); 
 void memory_write(C8* chip8, uint16_t address, uint8_t value); 
 uint8_t memory_read(C8* chip8, uint16_t address);
 void register_write(C8* chip8, uint8_t Vx, uint8_t value);
 uint8_t register_read(C8* chip8, uint8_t Vx);  
 uint16_t pc_read(C8* chip8); 
-uint8_t load_rom(char **argv); 
 void fetch(); 
 void decode(); 
 void execute(); 
