@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "disassembler.h"
+#include "../include/disassembler.h"
 
 void disassemble(uint8_t *codebuffer, uint16_t pc)
 {

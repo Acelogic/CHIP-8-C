@@ -1,5 +1,5 @@
 TARGET = emu
-
+CC = gcc
 SRC_DIR = src
 INC_DIR = include
 OBJ_DIR = obj 
@@ -13,18 +13,18 @@ INC = $(wildcard $(INC_DIR)/*.h)
 #Listing all object files
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-CFLAGS  += -Wall -I$(INC)
+CFLAGS  += -Wall -I $(INC)
 LDFLAGS += -Llib
 LDLIBS  += -lm
 
-all: $(TARGET)
+all: clean
+		$(CC) $(CFLAGS) $(INC) $(SRC) -o $(TARGET)
+		@printf "Making Program \n"
+		@printf "\033[1;32m"
+		@printf "Successfully created program"
+		@printf "\033[0m\n"
 
-$(TARGET): $(OBJ)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-
-$(OBJ_DIR) := $(notdir $(patsubst %.c,%.o,$(wildcard $(SRC_DIR)/*.c)))
 
 clean: 
-	$(RM) $(OBJ)
+	rm -f emu
 
-.PHONY: all clean

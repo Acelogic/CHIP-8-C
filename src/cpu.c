@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "cpu.h"
-#include "disassembler.h"
+#include "../include/cpu.h"
+#include "../include/disassembler.h"
 
 C8 *chip_8_init()
 {

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <getopt.h>
-#include "cpu.h"
+#include "../include/cpu.h"
 
 int main(int argc, char **argv)
 {
