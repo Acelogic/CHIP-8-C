@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "../include/cpu.h"
-#include "../include/disassembler.h"
+#include "cpu.h"
+#include "disassembler.h"
 
-C8 *chip_8_init()
-{
+//Creates New Chip 8
+ C8 *chip_8_init(){
     C8 *chip8 = malloc(sizeof(C8));
     chip8->opcode = 0;
     chip8->sp = 0;
@@ -16,24 +16,40 @@ C8 *chip_8_init()
     chip8->pc = PROGRAM_START;
 
     uint16_t i;
-    for (i = 0; i < NUM_REGS; i++){register_write(chip8, i, 0);}
-    for (i = 0; i < GFX_SIZE; i++){chip8->graphics[i] = 0;}
-    for (i = 0; i < STACK_SIZE; i++){chip8->stack[i] = 0;}
-    for (i = 0; i < NUM_KEYS; i++){chip8->key[i] = 0;}
-    for (i = 0; i < MEM_SIZE; i++){memory_write(chip8, i, 0); }
-    for (i = 0; i < CHARSET_SIZE; i++) { memory_write(chip8, CHARSET_START + i, font_charset[i]);}
+    for (i = 0; i < NUM_REGS; i++){
+        register_write(chip8, i, 0);
+        }
+    for (i = 0; i < GFX_SIZE; i++){
+        chip8->graphics[i] = 0;
+        }
+    for (i = 0; i < STACK_SIZE; i++){
+        chip8->stack[i] = 0;
+        }
+    for (i = 0; i < NUM_KEYS; i++){
+        chip8->key[i] = 0;
+        }
+    for (i = 0; i < MEM_SIZE; i++){
+        memory_write(chip8, i, 0); 
+        }
+    for (i = 0; i < CHARSET_SIZE; i++) { 
+        memory_write(chip8, CHARSET_START + i, font_charset[i]);
+        }
     
     return chip8;
 }
 
 uint8_t memory_read(C8 *chip8, uint16_t address)
 {
+    printf("Read: 0x%X \n", chip8->memory[address]);
     return chip8->memory[address];
 }
 void memory_write(C8 *chip8, uint16_t address, uint8_t value)
 {
     chip8->memory[address] = value;
+    //printf("Written: 0x%X \n", value);
 }
+
+// register_read(Chip8, 0-F for V )
 uint8_t register_read(C8 *chip8, uint8_t Vx)
 {
     return chip8->V[Vx];
@@ -43,6 +59,7 @@ void register_write(C8 *chip8, uint8_t Vx, uint8_t value)
     chip8->V[Vx] = value;
 }
 
+
 uint16_t pc_read(C8 *chip8)
 {
     return chip8->pc;
@@ -51,6 +68,7 @@ void pc_write(C8 *chip8, uint16_t value)
 {
     chip8->pc = value;
 }
+
 
 uint16_t I_read(C8 *chip8)
 {
@@ -83,12 +101,15 @@ void disassemble_rom(C8 *chip8, FILE *f)
     fseek(f, 0L, SEEK_SET);
 
     //CHIP-8 convention puts programs in memory at 0x200
-    // They will all have hardcoded addresses expecting that
+    //They will all have hardcoded addresses expecting that
     //
+   
     //Read the file into memory at 0x200 and close it.
     uint8_t *buffer = malloc(fsize + 0x200);
     fread(buffer + 0x200, fsize, 1, f);
     fclose(f);
+    
+    // Start the Disassemble Loop At Address 0x200 and increment the program counter
     while (chip8->pc < (fsize + 0x200))
     {
         disassemble(buffer, chip8->pc);
@@ -123,7 +144,7 @@ void load_rom(C8 *chip8, FILE *f){
         memory_write(chip8, i + PROGRAM_START, buffer[i]);
     }
 
-    printf("DEBUG: Rom loaded into RAM | memory.dump generated\n");
+    printf("DEBUG: Rom loaded into RAM & memory.dump generated\n");
     chip8_mem_dump(chip8);
     chip8_debug(chip8);
 }
@@ -164,6 +185,6 @@ void chip8_debug(C8 *chip8){
     //    }
     fprintf(stderr, "\n\n");
 }
-void fetch();
-void decode();
-void execute();
+
+
+

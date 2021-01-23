@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "../include/disassembler.h"
+#include "disassembler.h"
 
 void disassemble(uint8_t *codebuffer, uint16_t pc)
 {
@@ -10,7 +10,7 @@ void disassemble(uint8_t *codebuffer, uint16_t pc)
     uint8_t upper_nibble = (upper_byte >> 4);
     uint8_t lower_nibble = (lower_byte & 0x0f);
 
-    printf("| PC: %04x | Byte TWO : %02x | Byte ONE: %02x | (->) | ", pc, upper_byte, lower_byte);
+    printf("| PC: %04x | Byte UPPER : %02x | Byte LOWER: %02x | (->) | ", pc, upper_byte, lower_byte);
 
     switch (upper_nibble)
     {
@@ -21,7 +21,7 @@ void disassemble(uint8_t *codebuffer, uint16_t pc)
             printf("%-10s", "CLS"); // //-10s handles spacing
             break;
         case 0xee:
-            printf("%-10s", "RTS");
+            printf("%-10s", "RET");
             break;
         default:
             printf("UNKNOWN 0");

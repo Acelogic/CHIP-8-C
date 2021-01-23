@@ -35,7 +35,7 @@ const static uint8_t font_charset[CHARSET_SIZE] = {
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
-struct cpu{
+ typedef struct {
     uint8_t memory[MEM_SIZE];
     uint8_t V[NUM_REGS];
     uint8_t key[NUM_KEYS];
@@ -50,9 +50,9 @@ struct cpu{
     uint16_t stack[STACK_SIZE];
     uint16_t sp;
     
-} cpu;
-typedef struct cpu C8; 
- 
+} C8;
+
+    
 C8* chip_8_init(); 
 
 uint8_t memory_read(C8 *chip8, uint16_t address);
