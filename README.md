@@ -6,7 +6,7 @@ Roms to test with are included in the roms folder
 
 ## Usage
 ```
-"Usage: emu -d <filename> | emu -f <filename>\n");
+"Usage: emu -d <filename> | emu -f <filename>\n"
 ```
 ### Disassembler implemented with -d 
 ![Disassembly](docs/images/Disassembly.png)
